@@ -11,7 +11,7 @@ do
 done
 }
 #Game Board Function For Showing Game Board
-gameBoard()
+generateBoard()
 {
 	assignPosition
 	echo "################################################"
@@ -29,9 +29,22 @@ gameBoard()
    echo "     ${position[7]}         ||      ${position[8]}        ||     ${position[9]}         "
    echo "               ||               ||              "
 }
-
+#Toss Function Which Will Decide Who Play First
+doToss()
+{
+	choose=$(( RANDOM%2 ))
+	if(( $choose == 1 ))
+	then
+			echo "User Selected Randamoly"
+			user
+	else
+			echo "Computer Selected Randamoly"
+			computer
+	fi
+}
 while [[ $GAME_START -eq 0 ]]
 do
-	gameBoard
+	generateBoard
+	doToss
 	GAME_START=1;
 done
