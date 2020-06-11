@@ -2,48 +2,50 @@
 echo "Welcome to TicTacToe Game"
 #Constant
 GAME_START=0;
+CHECK_EMPTY=''
 
 #Variables
 checkRounds=0;
+toss=0;
 
 #Game Board Function For Showing Game Board
 generateBoard()
 {
-	assignPosition
 	echo "################################################"
    echo "#############<---TIC TAC TOE--->################"
 	echo "################################################"
 	echo "               ||               ||              "
-	echo "     ${position[1]}         ||      ${position[2]}        ||     ${position[3]}         "
+	echo "     ${position[1]}          ||      ${position[2]}         ||     ${position[3]}         "
    echo "               ||               ||              "
 	echo "================================================"
    echo "               ||               ||              "
-   echo "     ${position[4]}         ||      ${position[5]}        ||     ${position[6]}         "
+   echo "     ${position[4]}          ||      ${position[5]}         ||     ${position[6]}         "
    echo "               ||               ||              "
    echo "================================================"
    echo "               ||               ||              "
-   echo "     ${position[7]}         ||      ${position[8]}        ||     ${position[9]}         "
+   echo "     ${position[7]}          ||      ${position[8]}         ||     ${position[9]}         "
    echo "               ||               ||              "
-}
-#Function for assigning value of every cell 1 to 9
-assignPosition()
-{
-for(( i=1;i<10;i++ ))
-do
-   position[i]=$i;
-done
 }
 #Toss Function Which Will Decide Who Play First
 doToss()
 {
-	choose=$(( RANDOM%2 ))
-	if(( $choose == 1 ))
+	if(( $toss == 0 ))
 	then
-			echo "User Selected Randamoly"
-			playUser
-	else
-			echo "Computer Selected Randamoly"
-			playComputer
+			generateBoard
+			choose=$(( RANDOM%2 ))
+			if(( $choose == 1 ))
+			then
+					echo "User Selected Randamoly"
+					playUser
+					generateBoard
+			elif(( $choose == 0 ))
+			then
+					echo "Computer Selected Randamoly"
+					#generateBoard
+					playComputer
+					generateBoard
+			fi
+			toss=1;
 	fi
 }
 #PlayUser Function Which Will Give Turn To User
@@ -52,6 +54,8 @@ playUser()
 	echo "Play User"
    playerName=User;
 	checkRoundUser
+	read -p "Enter Position, In Which Cell Do you want to move " userPosition
+	position[userPosition]="$setValueUser"
 }
 #CheckRoundsUser Function To Check It Is First Round If First Then User Can Assign any X and O
 checkRoundUser()
@@ -79,9 +83,19 @@ checkRoundUser()
 playComputer()
 {
 	echo "Play Computer"
+	echo ${position[1]}
    playerName=Computer
 	checkRoundComputer
-	#playUser
+	for(( i=1;i<10;i++ ))
+	do
+		echo "loop "$position[${i}]
+    	if [ -z "${position[$i]}" ]
+		then
+      		echo "empty"
+				position[$i]="$setValueComputer";
+				i=10;
+    	fi
+		done
 }
 #CheckRoundComputer Function For Checking Rounds
 checkRoundComputer()
@@ -111,11 +125,34 @@ select_X_O()
 	fi
 }
 
-while [[ $GAME_START -eq 0 ]]
+while [[ $GAME_START == 0 ]]
 do
-   generateBoard
    doToss
-   GAME_START=1;
+	if(( $choose == 1 ))
+	then
+			shiftToOther=1
+			playComputer
+			generateBoard
+			choose=2;
+	elif(( $choose == 0 ))
+	then
+			shiftToOther=2
+			playUser
+			generateBoard
+			choose=2;
+	fi
+	if(( $shiftToOther == 1 ))
+	then
+			playUser
+			generateBoard
+			shiftToOther=2
+	elif(( $shiftToOther == 2 ))
+	then
+			playComputer
+			generateBoard
+			shiftToOther=1
+	fi
+	GAME_START=1;
 done
 
 
