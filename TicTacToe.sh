@@ -1,8 +1,8 @@
 #!/bin/bash -x
 echo "Welcome to TicTacToe Game"
 #Constant
-GAME_START=0;
-CHECK_EMPTY=''
+START=0;
+END=1;
 
 #Variables
 checkRounds=0;
@@ -41,7 +41,6 @@ doToss()
 			elif(( $choose == 0 ))
 			then
 					echo "Computer Selected Randamoly"
-					#generateBoard
 					playComputer
 					generateBoard
 			fi
@@ -52,10 +51,16 @@ doToss()
 playUser()
 {
 	echo "Play User"
-   playerName=User;
 	checkRoundUser
 	read -p "Enter Position, In Which Cell Do you want to move " userPosition
-	position[userPosition]="$setValueUser"
+	if [ -z "${position[$userPosition]}" ]
+   then
+           echo "empty check valid move"
+           position[userPosition]="$setValueUser"
+   else
+				echo "Invalid Input."
+				playUser
+	fi
 }
 #CheckRoundsUser Function To Check It Is First Round If First Then User Can Assign any X and O
 checkRoundUser()
@@ -84,7 +89,6 @@ playComputer()
 {
 	echo "Play Computer"
 	echo ${position[1]}
-   playerName=Computer
 	checkRoundComputer
 	for(( i=1;i<10;i++ ))
 	do
@@ -124,8 +128,66 @@ select_X_O()
 			setValueUser=x;
 	fi
 }
+#Function for checking win
+checkWin()
+{
+	value=$1
+   winnerName=$2
+	if [[ ${position[1]} == $value && ${position[2]} == $value &&  ${position[3]} == $value ]]
+	then
+			echo "$winnerName Match Win"
+			START=$END
+	elif [[ ${position[4]} == $value && ${position[5]} == $value &&  ${position[6]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[7]} == $value && ${position[8]} == $value &&  ${position[9]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[1]} == $value && ${position[4]} == $value &&  ${position[7]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[2]} == $value && ${position[5]} == $value &&  ${position[8]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[3]} == $value && ${position[6]} == $value &&  ${position[9]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[1]} == $value && ${position[5]} == $value &&  ${position[9]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+   elif [[ ${position[3]} == $value && ${position[5]} == $value &&  ${position[7]} == $value ]]
+	then
+         echo "$winnerName Match Win"
+         START=$END
+	fi
+}
+#CheckTie Function checking every time match tie or not
+checkTie()
+{
+	for(( tieCounter=0;tieCounter<10;tieCounter++ ))
+	do
+		if [ -z "${position[$tieCounter]}" ]
+		then
+				echo "$tieCounter Cells Empty Match Not Tie. Play Again"
+				break
+		else
+				if(( $tieCounter == 9 ))
+				then
+						echo "Match Tie"
+						START=$END
+				fi
+		fi
+	done
+}
 
-while [[ $GAME_START == 0 ]]
+
+while [[ $START == 0 ]]
 do
    doToss
 	if(( $choose == 1 ))
@@ -145,14 +207,19 @@ do
 	then
 			playUser
 			generateBoard
+			playerName="User"
+			checkWin $setValueUser $playerName
+			checkTie
 			shiftToOther=2
 	elif(( $shiftToOther == 2 ))
 	then
 			playComputer
 			generateBoard
+         playerName="Computer"
+         checkWin $setValueComputer $playerName
+			checkTie
 			shiftToOther=1
 	fi
-	GAME_START=1;
 done
 
 
