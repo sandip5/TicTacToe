@@ -90,16 +90,7 @@ playComputer()
 	echo "Play Computer"
 	echo ${position[1]}
 	checkRoundComputer
-	for(( i=1;i<10;i++ ))
-	do
-		echo "loop "$position[${i}]
-    	if [ -z "${position[$i]}" ]
-		then
-      		echo "empty"
-				position[$i]="$setValueComputer";
-				i=10;
-    	fi
-		done
+	moveComputer
 }
 #CheckRoundComputer Function For Checking Rounds
 checkRoundComputer()
@@ -127,6 +118,21 @@ select_X_O()
 			setValueComputer=o;
 			setValueUser=x;
 	fi
+	for(( i=1;i<10;i++ ))
+   do
+	   echo "loop "$position[${i}]
+   	if [ -z "${position[$i]}" ]
+   	then
+          echo "empty"
+          position[$i]="$setValueComputer";
+          i=10;
+    	fi
+    done
+}
+#Function for movement of computer at its term
+moveComputer()
+{
+	echo "Best Possible Move"
 }
 #Function for checking win
 checkWin()
