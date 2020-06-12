@@ -4,8 +4,6 @@ echo "Welcome to TicTacToe Game"
 declare -a position
 #Constant
 START=0;
-END=1;
-SET_EMPTY=''
 
 #Variables
 checkRounds=0;
@@ -92,9 +90,12 @@ checkRoundUser()
 playComputer()
 {
 	echo "Play Computer"
-	echo ${position[1]}
-	checkRoundComputer
-	moveComputer
+	if(( $checkRounds == 0 ))
+   then
+           checkRoundComputer
+   else
+           moveComputer
+   fi
 }
 #CheckRoundComputer Function For Checking Rounds
 checkRoundComputer()
@@ -139,19 +140,21 @@ moveComputer()
 {
    for(( cellCounter=1;cellCounter<10;cellCounter++ ))
    do
+
       if [ -z "${position[$cellCounter]}" ]
       then
 				position[$cellCounter]="$setValueComputer"
             echo "$cellCounter Cells Empty if move in this cell then win or not"
          	playerName="Computer"
          	checkWin $setValueComputer $playerName
-				position[$cellCounter]=$SET_EMPTY
-            if(( $cellCounter == 9 ))
+				position[$cellCounter]=""
+      else
+				if(( $cellCounter == 9 ))
             then
                   echo "Not left any cell for Winning Move, Next if Opponent going to win after me then stop"
                   blockOpponent
-            fi
-      fi
+            fi 
+     fi
    done
 }
 #Function from which computer check in next round user going to win or not if win then block it
@@ -160,18 +163,19 @@ blockOpponent()
 	echo "Block Opponent"
    for(( blockCounter=1;blockCounter<10;blockCounter++ ))
    do
-      if [ -z "${position[$lockCounter]}" ]
+      if [ -z "${position[$blockCounter]}" ]
       then
             position[$blockCounter]="$setValueUser"
             echo "$blockCounter Cells Empty if move in this cell then win or not"
             virtualPlayerName="User"
 				actualPlayerName="Computer"
             checkOpponentWin $setValueUser $virtualPlayerName $actualPlayerName
-            position[$blockCounter]=$SET_EMPTY
+            position[$blockCounter]=""
+		else
             if(( $blockCounter == 9 ))
             then
                   echo "Not left any cell for block any winning position of User Move, Next if Opponent going to win after me then stop"
-                  checkCorner
+                  moveCorner
             fi
       fi
    done
@@ -225,10 +229,48 @@ checkOpponentWin()
          blockCounter=10
    fi
 }
-#CheckCorner Function For selection only Corners
-checkCorner()
+#MoveCorner Function For selection only Corners
+moveCorner()
 {
 	echo "Check Corner if empty then fill in any corner randamoly"
+	if  [ -z "${position[1]}" ]
+	then
+			echo "corner 1 ${position[1]}"
+			position[1]="$setValueComputer"
+	elif [ -z "${position[3]}" ]
+	then
+         echo "corner 3 ${position[3]}"
+         position[3]="$setValueComputer"
+	elif [ -z "${position[7]}" ]
+	then
+         echo "corner 7 ${position[7]}"
+         position[7]="$setValueComputer"
+	elif [ -z "${position[9]}" ]
+	then
+         echo "corner 9 ${position[9]}"
+         position[9]="$setValueComputer"
+	else
+			moveCenter
+	fi
+}
+#MoveCentere Function To Check Centere Position Empty If Empty Then Computer Move In Centere
+moveCenter()
+{
+	if [ -z "${position[5]}" ]
+	then
+			echo "Center is empty"
+			position[5]="$setValueComputer"
+	else
+			for(( i=1;i<10;i++ ))
+	   	do
+      		if [ -z "${position[$i]}" ]
+      		then
+         		echo "If centere is fillup then go first empty cell"
+          		position[$i]="$setValueComputer";
+          		i=10;
+      		fi
+    		done
+	fi
 }
 #Function for checking win
 checkWin()
@@ -238,41 +280,41 @@ checkWin()
 	if [[ ${position[1]} == $value && ${position[2]} == $value &&  ${position[3]} == $value ]]
 	then
 			echo "$winnerName Match Win"
-			START=$END
+			exit
 	elif [[ ${position[4]} == $value && ${position[5]} == $value &&  ${position[6]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[7]} == $value && ${position[8]} == $value &&  ${position[9]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[1]} == $value && ${position[4]} == $value &&  ${position[7]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[2]} == $value && ${position[5]} == $value &&  ${position[8]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[3]} == $value && ${position[6]} == $value &&  ${position[9]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[1]} == $value && ${position[5]} == $value &&  ${position[9]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
    elif [[ ${position[3]} == $value && ${position[5]} == $value &&  ${position[7]} == $value ]]
 	then
          echo "$winnerName Match Win"
-         START=$END
+         exit
 	fi
 }
 #CheckTie Function checking every time match tie or not
 checkTie()
 {
-	for(( tieCounter=0;tieCounter<10;tieCounter++ ))
+	for(( tieCounter=1;tieCounter<10;tieCounter++ ))
 	do
 		if [ -z "${position[$tieCounter]}" ]
 		then
