@@ -1,8 +1,11 @@
 #!/bin/bash -x
 echo "Welcome to TicTacToe Game"
+#Array
+declare -a position
 #Constant
 START=0;
 END=1;
+SET_EMPTY=''
 
 #Variables
 checkRounds=0;
@@ -51,6 +54,7 @@ doToss()
 playUser()
 {
 	echo "Play User"
+	track=2
 	checkRoundUser
 	read -p "Enter Position, In Which Cell Do you want to move " userPosition
 	if [ -z "${position[$userPosition]}" ]
@@ -107,6 +111,7 @@ checkRoundComputer()
 select_X_O()
 {
 	echo "select_X_O"
+	track=1;
 	selectXAndO=$(( RANDOM%2 ))
 	if(( $selectXAndO == 0 ))
 	then
@@ -132,7 +137,27 @@ select_X_O()
 #Function for movement of computer at its term
 moveComputer()
 {
-	echo "Best Possible Move"
+   for(( cellCounter=1;cellCounter<10;cellCounter++ ))
+   do
+      if [ -z "${position[$cellCounter]}" ]
+      then
+				position[$cellCounter]="$setValueComputer"
+            echo "$cellCounter Cells Empty if move in this cell then win or not"
+         	playerName="Computer"
+         	checkWin $setValueComputer $playerName
+				position[$cellCounter]=$SET_EMPTY
+            if(( $cellCounter == 9 ))
+            then
+                  echo "Not left any cell for Winning Move, Next if Opponent going to win after me then stop"
+                  blockOpponent
+            fi
+      fi
+   done
+}
+#Function from which computer check in next round user going to win or not if win then block it
+blockOpponent()
+{
+	echo "Block Opponent"
 }
 #Function for checking win
 checkWin()
