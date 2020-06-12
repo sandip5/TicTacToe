@@ -256,6 +256,7 @@ moveCorner()
 #MoveCentere Function To Check Centere Position Empty If Empty Then Computer Move In Centere
 moveCenter()
 {
+	echo "Move Center"
 	if [ -z "${position[5]}" ]
 	then
 			echo "Center is empty"
