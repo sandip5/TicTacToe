@@ -4,11 +4,9 @@ echo "Welcome to TicTacToe Game"
 declare -a position
 #Constant
 START=0;
-
 #Variables
 checkRounds=0;
 toss=0;
-
 #Game Board Function For Showing Game Board
 generateBoard()
 {
@@ -107,7 +105,6 @@ checkRoundComputer()
          checkRounds=1;
    fi
 }
-
 #Select_X_O Function For Randamoly Generating In Between X And O
 select_X_O()
 {
@@ -145,7 +142,6 @@ moveComputer()
 {
    for(( cellCounter=1;cellCounter<10;cellCounter++ ))
    do
-
       if [ -z "${position[$cellCounter]}" ]
       then
 				position[$cellCounter]="$setValueComputer"
@@ -153,19 +149,15 @@ moveComputer()
          	playerName="Computer"
          	checkWin $setValueComputer $playerName
 				position[$cellCounter]=""
-      else
-				if(( $cellCounter == 9 ))
-            then
-                  echo "Not left any cell for Winning Move, Next if Opponent going to win after me then stop"
-                  blockOpponent
-            fi 
      fi
    done
+	blockOpponent
 }
 #Function from which computer check in next round user going to win or not if win then block it
 blockOpponent()
 {
 	echo "Block Opponent"
+	flag=1
    for(( blockCounter=1;blockCounter<10;blockCounter++ ))
    do
       if [ -z "${position[$blockCounter]}" ]
@@ -176,15 +168,12 @@ blockOpponent()
 				actualPlayerName="Computer"
             checkOpponentWin $setValueUser $virtualPlayerName $actualPlayerName
             position[$blockCounter]=""
-		else
-            if(( $blockCounter == 9 ))
-            then
-                  echo "Not left any cell for block any winning position of User Move, Next if Opponent going to win after me then stop"
-                  moveCorner
-            fi
       fi
    done
-
+	if [ $flag -eq 1 ]
+	then
+			moveCorner
+	fi
 }
 #Function to Block Opponent Winning Position
 checkOpponentWin()
@@ -196,42 +185,50 @@ checkOpponentWin()
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
 			position[$blockCounter]="$setValueComputer"
+			flag=2
 			blockCounter=10
    elif [[ ${position[4]} == $value && ${position[5]} == $value &&  ${position[6]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
+			flag=2
 			blockCounter=10
    elif [[ ${position[7]} == $value && ${position[8]} == $value &&  ${position[9]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
+			flag=2
 			blockCounter=10
    elif [[ ${position[1]} == $value && ${position[4]} == $value &&  ${position[7]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
-         blockCounter=10
+         flag=2
+			blockCounter=10
    elif [[ ${position[2]} == $value && ${position[5]} == $value &&  ${position[8]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
-         blockCounter=10
+         flag=2
+			blockCounter=10
    elif [[ ${position[3]} == $value && ${position[6]} == $value &&  ${position[9]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
-         blockCounter=10
+         flag=2
+			blockCounter=10
    elif [[ ${position[1]} == $value && ${position[5]} == $value &&  ${position[9]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
-         blockCounter=10
+         flag=2
+			blockCounter=10
    elif [[ ${position[3]} == $value && ${position[5]} == $value &&  ${position[7]} == $value ]]
    then
          echo "$If $checkWinnerName Match Win in next move then $blockWinnerName block that position so user can not move there"
          position[$blockCounter]="$setValueComputer"
-         blockCounter=10
+         flag=2
+			blockCounter=10
    fi
 }
 #MoveCorner Function For selection only Corners
@@ -327,8 +324,6 @@ checkTie()
 		fi
 	done
 }
-
-
 while [[ $START == 0 ]]
 do
    doToss
@@ -363,5 +358,3 @@ do
 			shiftToOther=1
 	fi
 done
-
-
