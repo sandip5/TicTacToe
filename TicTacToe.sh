@@ -124,15 +124,20 @@ select_X_O()
 			setValueComputer=o;
 			setValueUser=x;
 	fi
-	for(( i=1;i<10;i++ ))
+	moveFirstEmptyCell
+}
+#Function For Move Computer First Empty Cell
+moveFirstEmptyCell()
+{
+   for(( i=1;i<10;i++ ))
    do
-	   echo "loop "$position[${i}]
-   	if [ -z "${position[$i]}" ]
-   	then
+      echo "loop "$position[${i}]
+      if [ -z "${position[$i]}" ]
+      then
           echo "empty"
           position[$i]="$setValueComputer";
           i=10;
-    	fi
+      fi
     done
 }
 #Function for movement of computer at its term
@@ -262,15 +267,7 @@ moveCenter()
 			echo "Center is empty"
 			position[5]="$setValueComputer"
 	else
-			for(( i=1;i<10;i++ ))
-	   	do
-      		if [ -z "${position[$i]}" ]
-      		then
-         		echo "If centere is fillup then go first empty cell"
-          		position[$i]="$setValueComputer";
-          		i=10;
-      		fi
-    		done
+			moveFirstEmptyCell
 	fi
 }
 #Function for checking win
