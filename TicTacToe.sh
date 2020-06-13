@@ -21,14 +21,14 @@ then
 	choose=$(( RANDOM%2 ))
 	if(( $choose == 1 ))
 	then
-			printf "User Win Toss"
-			playUser
-			board
+		printf "User Win Toss"
+		playUser
+		board
 	elif(( $choose == 0 ))
 	then
-			printf "Computer Win Toss"
-			playComputer
-			board
+		printf "Computer Win Toss"
+		playComputer
+		board
 	fi
 	toss=1;
 fi
@@ -41,10 +41,10 @@ checkRoundUser
 read -p "Enter Position : " userPosition
 if [ -z "${position[$userPosition]}" ]
 then
-      position[userPosition]="$setValueUser"
+	position[userPosition]="$setValueUser"
 else
-		printf "Invalid Input."
-		playUser
+	printf "Invalid Input."
+	playUser
 fi
 }
 #CheckRoundsUser Function To Check It Is First Round If First Then User Can Assign any X and O
@@ -52,19 +52,19 @@ checkRoundUser()
 {
 if(( $checkRounds == 0 ))
 then
-		read -p "Choose Value In Between X And O :" setValueUser
-		if [ "$setValueUser" == "x" ]
-		then
-				setValueComputer="o";
-				checkRounds=1;
-		elif [ "$setValueUser" == "o" ]
-		then
-				setValueComputer="x";
-				checkRounds=1;
-		else
-				Printf "Select Only In Between X And O In Lower Case"
-				checkRoundUser
-		fi
+	read -p "Choose Value In Between X And O :" setValueUser
+	if [ "$setValueUser" == "x" ]
+	then
+		setValueComputer="o";
+		checkRounds=1;
+	elif [ "$setValueUser" == "o" ]
+	then
+		setValueComputer="x";
+		checkRounds=1;
+	else
+		Printf "Select Only In Between X And O In Lower Case"
+		checkRoundUser
+	fi
 fi
 }
 #PlayComputer Function Which Will Give Turn To Computer
@@ -72,9 +72,9 @@ playComputer()
 {
 if(( $checkRounds == 0 ))
 then
-		checkRoundComputer
+	checkRoundComputer
 else
-		moveComputer
+	moveComputer
 fi
 }
 #CheckRoundComputer Function For Checking Rounds
@@ -82,8 +82,8 @@ checkRoundComputer()
 {
 if(( $checkRounds == 0 ))
 then
-		select_X_O
-		checkRounds=1;
+	select_X_O
+	checkRounds=1;
 fi
 }
 #Select_X_O Function For Randamoly Generating In Between X And O
@@ -93,13 +93,13 @@ track=1;
 selectXAndO=$(( RANDOM%2 ))
 if(( $selectXAndO == 0 ))
 then
-		setValueComputer=x;
-		setValueUser=o;
+	setValueComputer=x;
+	setValueUser=o;
 else
-		setValueComputer=o;
-		setValueUser=x;
+	setValueComputer=o;
+	setValueUser=x;
 fi
-		moveFirstEmptyCell
+	moveFirstEmptyCell
 }
 #Function For Move Computer First Empty Cell
 moveFirstEmptyCell()
@@ -108,8 +108,8 @@ for(( i=1;i<10;i++ ))
 do
 	if [ -z "${position[$i]}" ]
 	then
-			position[$i]="$setValueComputer";
-			i=10;
+		position[$i]="$setValueComputer";
+		i=10;
 	fi
 done
 }
@@ -120,10 +120,10 @@ for(( cellCounter=1;cellCounter<10;cellCounter++ ))
 do
 	if [ -z "${position[$cellCounter]}" ]
 	then
-			position[$cellCounter]="$setValueComputer"
-         playerName="Computer"
-         checkWin $setValueComputer $playerName
-			position[$cellCounter]=""
+		position[$cellCounter]="$setValueComputer"
+         	playerName="Computer"
+         	checkWin $setValueComputer $playerName
+		position[$cellCounter]=""
 	fi
 done
 blockOpponent
@@ -136,9 +136,9 @@ for(( blockCounter=1;blockCounter<10;blockCounter++ ))
 do
 	if [ -z "${position[$blockCounter]}" ]
 	then
-      	position[$blockCounter]="$setValueUser"
- 			checkOpponentWin $setValueUser
- 			position[$blockCounter]=""
+      		position[$blockCounter]="$setValueUser"
+ 		checkOpponentWin $setValueUser
+ 		position[$blockCounter]=""
  	fi
 done
 if [ $flag -eq 1 ]
@@ -188,18 +188,18 @@ moveCorner()
 {
 if  [ -z "${position[1]}" ]
 then
-		position[1]="$setValueComputer"
+	position[1]="$setValueComputer"
 elif [ -z "${position[3]}" ]
 then
-		position[3]="$setValueComputer"
+	position[3]="$setValueComputer"
 elif [ -z "${position[7]}" ]
 then
-		position[7]="$setValueComputer"
+	position[7]="$setValueComputer"
 elif [ -z "${position[9]}" ]
 then
-		position[9]="$setValueComputer"
+	position[9]="$setValueComputer"
 else
-		moveCenter
+	moveCenter
 fi
 }
 #MoveCentere Function To Check Centere Position Empty If Empty Then Computer Move In Centere
@@ -207,17 +207,17 @@ moveCenter()
 {
 if [ -z "${position[5]}" ]
 then
-		position[5]="$setValueComputer"
+	position[5]="$setValueComputer"
 else
-		moveFirstEmptyCell
+	moveFirstEmptyCell
 fi
 }
 #Function For Refactoring Code
 insideWin()
 {
-		board
-      printf "$winnerName Match Win"
-      exit
+	board
+	printf "$winnerName Match Win"
+	exit
 }
 #Function for checking win
 checkWin()
@@ -226,28 +226,28 @@ value=$1
 winnerName=$2
 if [[ ${position[1]} == $value && ${position[2]} == $value &&  ${position[3]} == $value ]]
 then
-		insideWin
+	insideWin
 elif [[ ${position[4]} == $value && ${position[5]} == $value &&  ${position[6]} == $value ]]
 then
-      insideWin
+ 	insideWin
 elif [[ ${position[7]} == $value && ${position[8]} == $value &&  ${position[9]} == $value ]]
 then
-      insideWin
+	insideWin
 elif [[ ${position[1]} == $value && ${position[4]} == $value &&  ${position[7]} == $value ]]
 then
-      insideWin
+	insideWin
 elif [[ ${position[2]} == $value && ${position[5]} == $value &&  ${position[8]} == $value ]]
 then
-      insideWin
+	insideWin
 elif [[ ${position[3]} == $value && ${position[6]} == $value &&  ${position[9]} == $value ]]
 then
-      insideWin
+	insideWin
 elif [[ ${position[1]} == $value && ${position[5]} == $value &&  ${position[9]} == $value ]]
 then
-      insideWin
+	insideWin
 elif [[ ${position[3]} == $value && ${position[5]} == $value &&  ${position[7]} == $value ]]
 then
-      insideWin
+	insideWin
 fi
 }
 #CheckTie Function checking every time match tie or not
@@ -257,13 +257,13 @@ for(( tieCounter=1;tieCounter<10;tieCounter++ ))
 do
 	if [ -z "${position[$tieCounter]}" ]
 	then
-			break
+		break
 	else
-			if(( $tieCounter == 9 ))
-			then
-					echo "Match Tie"
-					exit
-			fi
+		if(( $tieCounter == 9 ))
+		then
+			echo "Match Tie"
+			exit
+		fi
 	fi
 done
 }
@@ -278,32 +278,32 @@ do
 	doToss
 	if(( $choose == 1 ))
 	then
-			shiftToOther=1
-			playComputer
-			board
-			choose=2;
+		shiftToOther=1
+		playComputer
+		board
+		choose=2;
 	elif(( $choose == 0 ))
 	then
-			shiftToOther=2
-			playUser
-			board
-			choose=2;
+		shiftToOther=2
+		playUser
+		board
+		choose=2;
 	fi
 	if(( $shiftToOther == 1 ))
 	then
-			playUser
-			board
-			playerName="User"
-			checkWin $setValueUser $playerName
-			checkTie
-			shiftToOther=2
+		playUser
+		board
+		playerName="User"
+		checkWin $setValueUser $playerName
+		checkTie
+		shiftToOther=2
 	elif(( $shiftToOther == 2 ))
 	then
-			playComputer
-			board
-         playerName="Computer"
-         checkWin $setValueComputer $playerName
-			checkTie
-			shiftToOther=1
+		playComputer
+		board
+         	playerName="Computer"
+         	checkWin $setValueComputer $playerName
+		checkTie
+		shiftToOther=1
 	fi
 done
