@@ -28,23 +28,23 @@ generateBoard()
 #Toss Function Which Will Decide Who Play First
 doToss()
 {
-	if(( $toss == 0 ))
+if(( $toss == 0 ))
+then
+	generateBoard
+	choose=$(( RANDOM%2 ))
+	if(( $choose == 1 ))
 	then
+		echo "User Selected Randamoly"
+		playUser
 		generateBoard
-		choose=$(( RANDOM%2 ))
-		if(( $choose == 1 ))
-		then
-			echo "User Selected Randamoly"
-			playUser
-	     		generateBoard
-		elif(( $choose == 0 ))
-		then
-			echo "Computer Selected Randamoly"
-			playComputer
-			generateBoard
-		fi
-		toss=1;
+	elif(( $choose == 0 ))
+	then
+		echo "Computer Selected Randamoly"
+		playComputer
+		generateBoard
 	fi
+	toss=1;
+fi
 }
 #PlayUser Function Which Will Give Turn To User
 playUser()
