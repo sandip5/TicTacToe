@@ -65,24 +65,24 @@ fi
 #CheckRoundsUser Function To Check It Is First Round If First Then User Can Assign any X and O
 checkRoundUser()
 {
-	if(( $checkRounds == 0 ))
+if(( $checkRounds == 0 ))
+then
+	read -p "Assign value From X and O For User" setValueUser
+	if [ "$setValueUser" == "x" ]
 	then
-		read -p "Assign value From X and O For User" setValueUser
-		if [ "$setValueUser" == "x" ]
-		then
-			echo "checkrounduser setvaluecomputer o and setValueUser x"
-			setValueComputer="o";
-			checkRounds=1;
-		elif [ "$setValueUser" == "o" ]
-		then
-			echo "checkrounduser setvaluecomputer x and setvalueuser o"
-			setValueComputer="x";
-			checkRounds=1;
-		else
-			echo "Invalid Options Select Again"
-			checkRoundUser
-		fi
+		echo "checkrounduser setvaluecomputer o and setValueUser x"
+		setValueComputer="o";
+		checkRounds=1;
+	elif [ "$setValueUser" == "o" ]
+	then
+		echo "checkrounduser setvaluecomputer x and setvalueuser o"
+		setValueComputer="x";
+		checkRounds=1;
+	else
+		echo "Invalid Options Select Again"
+		checkRoundUser
 	fi
+fi
 }
 #PlayComputer Function Which Will Give Turn To Computer
 playComputer()
